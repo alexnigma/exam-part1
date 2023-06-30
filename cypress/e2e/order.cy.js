@@ -112,9 +112,4 @@ describe(`Order test suite`, () => {
         orderSummaryPage.getPlaceOrderButton().click();
         cy.get(`.confirmation`).should(`contain`, `Thank you for your purchase!`);
     });
-
-    it.only('111 ', () => {
-        findProduct(`Banana`)
-
-    });
 })

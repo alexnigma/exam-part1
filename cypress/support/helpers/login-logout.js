@@ -5,7 +5,7 @@ import user from "../../fixtures/user.json";
 
 export function login() {
     loginPage.visit();
-    cy.wait(1000);
+    cy.wait(1500);
     loginPage.closeWelcomePopup().click();
     loginPage.emailField().type(user.email);
     loginPage.passwordField().type(user.password);
