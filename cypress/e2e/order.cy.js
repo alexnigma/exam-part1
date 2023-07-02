@@ -8,13 +8,15 @@ import myPaymentOptionsPage from "../support/pages/MyPaymentOptionsPage";
 import orderSummaryPage from "../support/pages/OrderSummaryPage";
 import yourBasketPage from "../support/pages/YourBasketPage";
 import {findProduct} from "../support/helpers/findProduct";
+import {addNewAdress} from "../support/helpers/addNewAdress";
+import {addPaymentMethod} from "../support/helpers/addPaymentMethod";
 
 describe(`Order test suite`, () => {
 
     beforeEach(`Open web store and login`, () => {
         cy.log(`Home page`);
         homePage.visit();
-        homePage.cookiePopupDismiss().click();
+        homePage.cookiePopupDismiss();
 
         cy.log(`Login`);
         login()
@@ -107,6 +109,34 @@ describe(`Order test suite`, () => {
         cy.contains(`${address.state}`).should(`be.visible`);
         cy.contains(`${paymentCard.cardName}`).should(`be.visible`);
         cy.contains(`Banana`).should(`be.visible`);
+
+        cy.log(`Order confirmation`);
+        orderSummaryPage.getPlaceOrderButton().click();
+        cy.get(`.confirmation`).should(`contain`, `Thank you for your purchase!`);
+    });
+
+    it('Order from home page', () => {
+
+        cy.log(`Basket is empty`);
+        homePage.getBasketCounter().should(`contain`, 0);
+
+        cy.log(`Finding product on home page`);
+        findProduct(`Banana`);
+
+        cy.log(`Add banana to basket`);
+        homePage.getBasketCounter().should(`contain`, 1);
+        homePage.getBasketButton().click();
+        yourBasket.getCheckoutButton().click();
+
+        cy.log(`Adding new address`);
+        addNewAdress();
+
+        cy.log(`Choosing delivery method`);
+        deliveryMethodPage.getStandardDeliveryButton().click()
+        deliveryMethodPage.getContinueButton().click();
+
+        cy.log(`Adding new payment method`);
+        addPaymentMethod();
 
         cy.log(`Order confirmation`);
         orderSummaryPage.getPlaceOrderButton().click();

@@ -5,11 +5,12 @@ import user from "../../fixtures/user.json";
 
 export function login() {
     loginPage.visit();
-    cy.wait(1500);
+    cy.wait(2000);
     loginPage.closeWelcomePopup().click();
     loginPage.emailField().type(user.email);
     loginPage.passwordField().type(user.password);
     loginPage.loginButton().click();
+    cy.wait(1000);
 }
 
 export function logoutFromProfilePage() {

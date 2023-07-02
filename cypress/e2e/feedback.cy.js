@@ -6,7 +6,7 @@ describe(`Customer Feedback test suite`, () => {
 
     before(`Login`, () => {
         login();
-        cy.wait(1000)
+        cy.wait(1000);
     });
 
     it('Customer Feedback test', () => {
@@ -18,53 +18,8 @@ describe(`Customer Feedback test suite`, () => {
 
         cy.log(`Solving captcha`);
         customerFeedbackPage.getCaptcha().invoke('text').then((text) => {
-
-            let captchaSymbol = text.split(/[1234567890]/);
-            let filteredCaptchaSymbol = captchaSymbol.filter(symbol => symbol !== '');
-            let captchaNumber = text.split(/[+/*-]/);
-            let firstNumber = Number(captchaNumber[0]);
-            let firstAction = filteredCaptchaSymbol[0];
-            let secondNumber = Number(captchaNumber[1]);
-            let secondAction = filteredCaptchaSymbol[1];
-            let thirdNumber = Number(captchaNumber[2]);
-
-            function captchaResult() {
-                if (firstAction === "+" && secondAction === "+") {
-                    return firstNumber + secondNumber + thirdNumber
-                } else if (firstAction === "+" && secondAction === "-") {
-                    return firstNumber + secondNumber - thirdNumber
-                } else if (firstAction === "+" && secondAction === "*") {
-                    return firstNumber + secondNumber * thirdNumber
-                } else if (firstAction === "+" && secondAction === "/") {
-                    return firstNumber + secondNumber / thirdNumber
-                } else if (firstAction === "-" && secondAction === "+") {
-                    return firstNumber - secondNumber + thirdNumber
-                } else if (firstAction === "-" && secondAction === "-") {
-                    return firstNumber - secondNumber - thirdNumber
-                } else if (firstAction === "-" && secondAction === "*") {
-                    return firstNumber - secondNumber * thirdNumber
-                } else if (firstAction === "-" && secondAction === "/") {
-                    return firstNumber - secondNumber / thirdNumber
-                } else if (firstAction === "*" && secondAction === "+") {
-                    return firstNumber * secondNumber + thirdNumber
-                } else if (firstAction === "*" && secondAction === "-") {
-                    return firstNumber * secondNumber - thirdNumber
-                } else if (firstAction === "*" && secondAction === "*") {
-                    return firstNumber * secondNumber * thirdNumber
-                } else if (firstAction === "*" && secondAction === "/") {
-                    return firstNumber * secondNumber / thirdNumber
-                } else if (firstAction === "/" && secondAction === "+") {
-                    return firstNumber / secondNumber + thirdNumber
-                } else if (firstAction === "/" && secondAction === "-") {
-                    return firstNumber / secondNumber - thirdNumber
-                } else if (firstAction === "/" && secondAction === "*") {
-                    return firstNumber / secondNumber * thirdNumber
-                } else if (firstAction === "/" && secondAction === "/") {
-                    return firstNumber / secondNumber / thirdNumber
-                }
-            }
-
-            customerFeedbackPage.getCaptchaResut().type(captchaResult());
+            let captchaResult = eval(text);
+            customerFeedbackPage.getCaptchaResut().type(captchaResult);
         });
 
         cy.log(`Feedback form assertions`);
